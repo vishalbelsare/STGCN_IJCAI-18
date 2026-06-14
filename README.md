@@ -4,24 +4,39 @@
     <a href="https://github.com/VeritasYin/STGCN_IJCAI-18"><img src="https://img.shields.io/badge/-Github-grey?logo=github" alt="Github"></a>
     <a href="https://github.com/VeritasYin/STGCN_IJCAI-18/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-BSD%202--Clause-red.svg"></a>
     <a href="https://pytorch-geometric-temporal.readthedocs.io/en/latest/modules/root.html#torch_geometric_temporal.nn.attention.stgcn.STConv"><img src="https://img.shields.io/badge/PyG_Temporal-STConv-blue" alt=PyG_Temporal"></a>
-    <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FVeritasYin%2FSTGCN_IJCAI-18&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Hits&edge_flat=false"/></a>
+    <a href="https://github.com/VeritasYin/STGCN_IJCAI-18/stargazers"><img src="https://img.shields.io/github/stars/VeritasYin/STGCN_IJCAI-18?style=social" alt="Stars"></a>
+    <a href="https://github.com/VeritasYin/STGCN_IJCAI-18/network/members"><img src="https://img.shields.io/github/forks/VeritasYin/STGCN_IJCAI-18?style=social" alt="Forks"></a>
 </p>
 
 ## Introduction 
 We propose a novel deep learning framework, **STGCN**, to tackle time series prediction problem in traffic domain. Instead of applying regular convolutional and recurrent units, we formulate the problem on graphs and build the model with complete convolutional structures. To the best of our knowledge, it is the first time that to apply purely convolutional structures to extract spatio-temporal features simultaneously from graph-structured time series in a traffic study. 
 
+## Table of Contents
+- [Problem Formulation](#problem-formulation)
+- [Network Structure](#network-structure)
+- [Results](#results)
+- [Installation](#installation)
+- [Dataset](#dataset)
+- [Model Details](#model-details)
+- [Third-Party Implementations](#third-party-implementations)
+- [Updates](#updates)
+- [Citation](#citation)
+- [Star History](#star-history)
+- [License](#license)
+- [Contact](#contact) 
+
 ## Problem Formulation
 Traffic forecast is a typical time-series prediction problem, i.e. predicting the most likely traffic measurements (e.g. speed or traffic flow) in the next $H$ time steps given the previous $M$ observations from traffic network $G$ as, 
-<p align="center">
-  <img src="https://latex.codecogs.com/svg.image?\large&space;\hat{v}_{t&plus;1},&space;...,&space;\hat{v}_{t&plus;H}=\mathop{\arg\max}_{v_{t&plus;1},&space;...,&space;v_{t&plus;H}}&space;\log&space;P(v_{t&plus;1},&space;...,v_{t&plus;H}|v_{t-M&plus;1},&space;...,v_t;G)"/>
-</p>
+$$
+\hat{v}_{t+1}, ..., \hat{v}_{t+H}=\mathop{\arg\max}_{v_{t+1}, ..., v_{t+H}} \log P(v_{t+1}, ...,v_{t+H}|v_{t-M+1}, ...,v_t;G)
+$$
   
 <p align="center"><img width="30%" height="30%" src="figures/Graph_Structured_Traffic_Data.png"></p> 
   
 **Fig.1 Graph-structured traffic data.**  
 Each $v_t$ indicates a frame of current traffic status at time step $t$, which is recorded in a graph-structured data matrix.
 
-## Network Structure
+## Neural Network Structure
 <p align="center"><img src="figures/STGCN.png" width="50%" height="50%"></p>
   
 **Fig. 2 Architecture of spatio-temporal graph convolutional networks.**  
@@ -50,20 +65,24 @@ The framework STGCN consists of two spatio-temporal convolutional blocks (ST-Con
   
 **Fig. 4: Time consumptions of training on the dataset PeMSD7 (M, left) and (L, right)**
 
-## Requirements
-Our code is based on Python3 (>= 3.6). There are a few dependencies to run the code. The major libraries are listed as follows:
-* TensorFlow (>= 1.9.0)
-* NumPy (>= 1.15)
-* SciPy (>= 1.1.0)
-* Pandas (>= 0.23)
+## Installation
+Our code is based on Python3 (>= 3.6). We recommend using `virtualenv` or `conda` to manage the dependencies.
 
+**Quick Start:**
+```bash
+git clone https://github.com/VeritasYin/STGCN_IJCAI-18.git
+cd STGCN_IJCAI-18
+pip install -r requirements.txt
+```
+
+## Third-Party Implementations
 The implementation of Spatio-Temporal Graph Convolutional Layer with PyTorch is available in [PyG Temporal](https://github.com/benedekrozemberczki/pytorch_geometric_temporal/blob/master/torch_geometric_temporal/nn/attention/stgcn.py). You might refer to [STConv](https://pytorch-geometric-temporal.readthedocs.io/en/latest/modules/root.html#temporal-graph-attention-layers) that supports ChebConv Graph Convolutions.
 
 ## Dataset
 ### Data Source
 **[PeMSD7](http://pems.dot.ca.gov/)** was collected from Caltrans Performance Measurement System (PeMS) in real-time by over 39, 000 sensor stations, deployed across the major metropolitan areas of California state highway system. The dataset is also aggregated into 5-minute interval from 30-second data samples. We randomly select a medium and a large scale among the District 7 of California containing **228** and **1, 026** stations, labeled as PeMSD7(M) and PeMSD7(L), respectively, as data sources. The time range of PeMSD7 dataset is in the weekdays of **May and June of 2012**. We select the first month of historical speed records as training set, and the rest serves as validation and test set respectively. 
 
-Dataset PeMSD7(M/L) is now available under `dataset` folder (station list included). Please refer [issue #6](https://github.com/VeritasYin/STGCN_IJCAI-18/issues/6) for how to download metadata from PeMS.
+Dataset PeMSD7(M/L) is now available under `dataset` folder (**station list included**). Please refer [issue #6](https://github.com/VeritasYin/STGCN_IJCAI-18/issues/6) for how to download metadata from PeMS.
 
 ### Data Format
 You can make your customized dataset by the following format:  
@@ -75,9 +94,9 @@ Note: please replace the `$num_route` with the number of routes in your dataset.
 ### Data Preprocessing
 The standard time interval is set to 5 minutes. Thus, every node of the road graph contains **288** data points per day (day_slot = 288). The linear interpolation method is used to fill missing values after data cleaning. In addition, data input are normalized by Z-Score method.  
 In PeMSD7, the adjacency matrix of the road graph is computed based on the distances among stations in the traffic network. The weighted adjacency matrix W can be formed as,  
-<p align="center">
-  <img src="https://latex.codecogs.com/svg.image?\large&space;w_{ij}=\left\{&space;\begin{aligned}&space;&\exp(-\frac{{d_{ij}^2}}{{\sigma^2}}),~i&space;\neq&space;j~\text{and}~\exp(-\frac{{d_{ij}^2}}{{\sigma^2}})&space;\geq&space;\epsilon\\&space;&0\qquad\qquad,~\text{otherwise}.&space;\end{aligned}&space;\right."/>
-</p>
+$$
+w_{ij}=\left\{ \begin{aligned} &\exp(-\frac{{d_{ij}^2}}{{\sigma^2}}),~i \neq j~\text{and}~\exp(-\frac{{d_{ij}^2}}{{\sigma^2}}) \geq \epsilon\\ &0\qquad\qquad,~\text{otherwise}. \end{aligned} \right.
+$$
   
 All of our experiments use 60 minutes as the historical time window, a.k.a. 12 observed data points (M = 12) are used to forecast traffic conditions in the next 15, 30, and 45 minutes (H = 3, 6, 9).
 
@@ -123,6 +142,9 @@ Note: it normally takes around 6s on a NVIDIA TITAN Xp for one epoch with the ba
 ```
 
 ## Updates
+**Jun. 13, 2026**:
+* Updated Sensor Station Lists: Released explicit station lists for PeMSD7-L (1,026 nodes).
+
 **Feb. 22, 2022**:
 * Sensor Station List of PeMSD7-M released.
 
@@ -149,3 +171,14 @@ Please refer to our paper. Bing Yu*, Haoteng Yin*, Zhanxing Zhu. [Spatio-tempora
         year={2018}
     }
 
+## Star History
+<a href="https://star-history.com/#VeritasYin/STGCN_IJCAI-18&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=VeritasYin/STGCN_IJCAI-18&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=VeritasYin/STGCN_IJCAI-18&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=VeritasYin/STGCN_IJCAI-18&type=Date" />
+  </picture>
+</a>
+
+## License
+This project is licensed under the BSD 2-Clause License - see the [LICENSE](LICENSE) file for details.
