@@ -51,8 +51,9 @@ python main.py --n_route {$num_route} --graph {$weight_matrix_file}
 
 **Problem Formulation**  
 Traffic forecast is a typical time-series prediction problem, i.e. predicting the most likely traffic measurements (e.g. speed or traffic flow) in the next $H$ time steps given the previous $M$ observations from traffic network $G$ as, 
+
 $$
-\hat{v}_{t+1}, ..., \hat{v}_{t+H}=\mathop{\arg\max}_{v_{t+1}, ..., v_{t+H}} \log P(v_{t+1}, ...,v_{t+H}|v_{t-M+1}, ...,v_t;G)
+\hat{v}_{t+1}, \dots, \hat{v}_{t+H} = \arg \max_{v_{t+1}, \dots, v_{t+H}} \log P(v_{t+1}, \dots, v_{t+H} \mid v_{t-M+1}, \dots, v_t; G)
 $$
   
 <p align="center"><img width="30%" height="30%" src="figures/Graph_Structured_Traffic_Data.png"></p> 
@@ -60,8 +61,13 @@ $$
 **Fig.1 Graph-structured traffic data.** Each $v_t$ indicates a frame of current traffic status at time step $t$, which is recorded in a graph-structured data matrix.
 
 In PeMSD7, the weighted adjacency matrix $W$ of the road graph is computed based on the distances among stations:
+
 $$
-w_{ij}=\left\{ \begin{aligned} &\exp(-\frac{{d_{ij}^2}}{{\sigma^2}}),~i \neq j~\text{and}~\exp(-\frac{{d_{ij}^2}}{{\sigma^2}}) \geq \epsilon\\ &0\qquad\qquad,~\text{otherwise}. \end{aligned} \right.
+w_{ij} = 
+\begin{cases} 
+\exp \left(-\frac{d_{ij}^2}{\sigma^2}\right), & i \neq j \text{ and } \exp \left(-\frac{d_{ij}^2}{\sigma^2}\right) \geq \epsilon \\ 
+0, & \text{otherwise} 
+\end{cases}
 $$
 
 **Neural Network Structure**  
